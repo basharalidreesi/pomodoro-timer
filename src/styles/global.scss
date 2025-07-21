@@ -1,0 +1,38 @@
+:root {
+    --font-family: sans-serif;
+    --text-default-colour: #fff;
+}
+:root {
+    --body-background-colour: #000;
+    --pomodoro-outline-colour: #555b63;
+    --pomodoro-scale-background-colour: #b74845;
+    --pomodoro-base-background-colour: #b74845;
+    --pomodoro-gap-background-colour: #fff;
+    --pomodoro-marking-major-background-colour: #fff;
+    --pomodoro-marking-minor-background-colour: #fff;
+    --pomodoro-indicator-background-colour: #fff;
+}
+:root {
+    // pomodoro
+    --pomodoro-row-gap: 8px;
+    --pomodoro-padding-inline: 32px;
+    --pomodoro-padding-block: 8px;
+    --pomodoro-width-factor: 4;
+    --pomodoro-outline-width: 8px;
+    // pomodoro scale
+    --pomodoro-scale-height: 96px;
+    --pomodoro-scale-column-gap: 16px;
+    // pomodoro base
+    --pomodoro-base-height: 96px;
+    // pomodoro markings
+    --pomodoro-marking-major-width: 8px;
+    --pomodoro-marking-major-height: 24px;
+    --pomodoro-marking-major-offset-top: 4px;
+    --pomodoro-marking-minor-width: 4px;
+    --pomodoro-marking-minor-height: 12px;
+    --pomodoro-marking-font-size: 32px;
+    --pomodoro-marking-font-weight: 400;
+    // pomodoro indicator
+    --pomodoro-indicator-width: 48px;
+    --pomodoro-indicator-height: 32px;
+}
