@@ -3,25 +3,42 @@
     --text-default-colour: #fff;
 }
 :root {
+    // body
     --body-background-colour: #000;
-    --pomodoro-outline-colour: #555b63;
+    // pomodoro
+    --pomodoro-outline-colour: #a3313c;
+    --pomodoro-shadow-colour: #a3313c;
+    // pomodoro scale
     --pomodoro-scale-background-colour: #b74845;
-    --pomodoro-base-background-colour: #b74845;
+    // pomodoro gap
     --pomodoro-gap-background-colour: #fff;
+    // pomodoro base
+    --pomodoro-base-background-colour: #b74845;
+    // pomodoro markings
     --pomodoro-marking-major-background-colour: #fff;
     --pomodoro-marking-minor-background-colour: #fff;
+    // pomodoro indicator
     --pomodoro-indicator-background-colour: #fff;
+    // pomodoro status
+    --pomodoro-status-background-colour: #a3313c;
+    // pomodoro states
+    --pomodoro-state-complete-background-colour: #609863;
+    --pomodoro-state-ongoing-background-colour: #f9be5d;
 }
 :root {
     // pomodoro
-    --pomodoro-row-gap: 8px;
     --pomodoro-padding-inline: 32px;
     --pomodoro-padding-block: 8px;
     --pomodoro-width-factor: 4;
     --pomodoro-outline-width: 8px;
+    --pomodoro-border-radius: 16px;
+    --pomodoro-shadow-blur: 16px;
+    --pomodoro-shadow-spread: 16px;
     // pomodoro scale
     --pomodoro-scale-height: 96px;
     --pomodoro-scale-column-gap: 16px;
+    // pomodoro gap
+    --pomodoro-gap-height: 8px;
     // pomodoro base
     --pomodoro-base-height: 96px;
     // pomodoro markings
@@ -35,4 +52,27 @@
     // pomodoro indicator
     --pomodoro-indicator-width: 48px;
     --pomodoro-indicator-height: 32px;
+    // pomodoro status
+    --pomodoro-status-padding-block: 8px;
+    --pomodoro-status-padding-inline: 16px;
+    --pomodoro-status-column-gap: 8px;
+    // pomodoro states
+    --pomodoro-state-width: 8px;
+    --pomodoro-state-height: 8px;
+}
+@media (max-width: 640px) {
+    :root {
+        --pomodoro-width-factor: 3;
+    }
+}
+@media (max-width: 512px) {
+    :root {
+        --pomodoro-width-factor: 2;
+        --pomodoro-status-column-gap: 4px;
+    }
+}
+@media (max-width: 384px) {
+    :root {
+        --pomodoro-width-factor: 1;
+    }
 }

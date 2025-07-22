@@ -18,8 +18,8 @@ const {
         <meta name='viewport' content='width=device-width,initial-scale=1.0,viewport-fit=cover' />
         <link rel='icon' type='image/png' sizes='32x32' href='/pomodoro-timer/favicon-32x32.png' />
         <link rel='icon' type='image/png' sizes='16x16' href='/pomodoro-timer/favicon-16x16.png' />
-        <link rel='manifest' href='/pomodoro-timer/site.webmanifest' />
         <link rel='apple-touch-icon' sizes='180x180' href='/pomodoro-timer/apple-touch-icon.png' />
+        <link rel='manifest' href='/pomodoro-timer/site.webmanifest' />
         <meta name='generator' content={Astro.generator} />
     </head>
     <body>
@@ -28,13 +28,19 @@ const {
 </html>
 
 <style lang='scss'>
-    html,
-    body {
-        background-color: var(--body-background-colour);
+    @use '@styles/mixins.scss';
+
+    html {
+        overscroll-behavior: none;
     }
     body {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-direction: column;
+        background-color: var(--body-background-colour);
+    }
+    :global(*),
+    :global(*::before),
+    :global(*::after) {
+        @include mixins.no-select;
     }
 </style>

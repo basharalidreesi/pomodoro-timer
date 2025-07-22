@@ -25,18 +25,29 @@ import Layout from '@layouts/Layout.astro';
         <h1 class='sr-only'>Pomodoro</h1>
         <div class='pomodoro'>
             <div class='pomodoro-scale'>
-                {Array.from({ length: 60 }, (_, i) => i).map((n) => (
-                    <div
-                        class={`pomodoro-marking pomodoro-marking-${n % 5 === 0 ? 'major' : 'minor'}`}
-                        data-number={n}
-                    ></div>
-                ))}
+                {Array.from({ length: 61 }, (_, i) => {
+                    const n = i;
+                    const isMajor = n % 5 === 0;
+                    return (
+                        <div
+                            class={`pomodoro-marking pomodoro-marking-${isMajor ? 'major' : 'minor'}`}
+                            data-number={n}
+                        ></div>
+                    );
+                })}
             </div>
+            <div class='pomodoro-gap'></div>
             <div class='pomodoro-base'>
                 <div class='pomodoro-indicator'>
                     <svg viewBox='0 0 100 100' width='100' height='100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'>
                         <polygon points='50, 0 100, 100 0, 100' />
                     </svg>
+                </div>
+                <div class='pomodoro-status'>
+                    <div class='pomodoro-state pomodoro-state-complete'></div>
+                    <div class='pomodoro-state pomodoro-state-complete'></div>
+                    <div class='pomodoro-state pomodoro-state-complete'></div>
+                    <div class='pomodoro-state pomodoro-state-ongoing'></div>
                 </div>
             </div>
         </div>
@@ -46,15 +57,27 @@ import Layout from '@layouts/Layout.astro';
 <style lang='scss'>
     @use '@styles/mixins.scss';
 
+    main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     .pomodoro {
+        position: relative;
         display: flex;
         flex-direction: column;
-        row-gap: var(--pomodoro-row-gap);
         width: calc((var(--pomodoro-padding-inline) * 2) + ((var(--pomodoro-marking-major-width) + (var(--pomodoro-marking-minor-width) * 4) + (var(--pomodoro-scale-column-gap) * 5)) * var(--pomodoro-width-factor)));
-        background-color: var(--pomodoro-gap-background-colour);
-        border-radius: 1rem;
+        border-radius: var(--pomodoro-border-radius);
         overflow: hidden;
         box-shadow: 0 0 0 var(--pomodoro-outline-width) var(--pomodoro-outline-colour);
+    }
+    .pomodoro::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        box-shadow: inset 0 0 var(--pomodoro-shadow-blur) var(--pomodoro-shadow-spread) var(--pomodoro-shadow-colour);
+        pointer-events: none;
     }
     .pomodoro-scale {
         display: flex;
@@ -64,8 +87,14 @@ import Layout from '@layouts/Layout.astro';
         padding-inline: var(--pomodoro-padding-inline);
         padding-block: var(--pomodoro-padding-block);
         background-color: var(--pomodoro-scale-background-colour);
+        // overflow-x: hidden;
+        // overflow-x: clip;
         overflow-x: auto;
         @include mixins.no-scrollbar;
+    }
+    .pomodoro-gap {
+        height: var(--pomodoro-gap-height);
+        background-color: var(--pomodoro-gap-background-colour);
     }
     .pomodoro-base {
         height: var(--pomodoro-base-height);
@@ -76,6 +105,12 @@ import Layout from '@layouts/Layout.astro';
     .pomodoro-scale .pomodoro-marking {
         flex: 0 0 auto;
         position: relative;
+    }
+    .pomodoro-scale .pomodoro-marking:first-child {
+        margin-left: calc(50% - var(--pomodoro-marking-major-width) / 2);
+    }
+    .pomodoro-scale .pomodoro-marking:last-child {
+        margin-right: calc(50% - var(--pomodoro-marking-major-width) / 2);
     }
     .pomodoro-scale .pomodoro-marking-major {
         width: var(--pomodoro-marking-major-width);
@@ -97,6 +132,7 @@ import Layout from '@layouts/Layout.astro';
         background-color: var(--pomodoro-marking-minor-background-colour);
     }
     .pomodoro-base {
+        position: relative;
         display: flex;
         align-items: flex-start;
         justify-content: center;
@@ -110,6 +146,32 @@ import Layout from '@layouts/Layout.astro';
         width: 100%;
         height: 100%;
         fill: var(--pomodoro-indicator-background-colour);
+    }
+    .pomodoro-base .pomodoro-status {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        display: flex;
+        column-gap: var(--pomodoro-status-column-gap);
+        width: 100%;
+        padding-block: var(--pomodoro-status-padding-block);
+        padding-inline: var(--pomodoro-status-padding-inline);
+        background: var(--pomodoro-status-background-colour);
+        overflow-x: auto;
+        @include mixins.no-scrollbar;
+        z-index: 1;
+    }
+    .pomodoro-base .pomodoro-state {
+        flex: 0 0 auto;
+        width: var(--pomodoro-state-width);
+        height: var(--pomodoro-state-height);
+        border-radius: 100%;
+    }
+    .pomodoro-base .pomodoro-state-complete {
+        background-color: var(--pomodoro-state-complete-background-colour);
+    }
+    .pomodoro-base .pomodoro-state-ongoing {
+        background-color: var(--pomodoro-state-ongoing-background-colour);
     }
 
     .sr-only:not(:focus):not(:active) {
