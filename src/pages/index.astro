@@ -25,6 +25,7 @@ import Layout from '@layouts/Layout.astro';
         <h1 class='sr-only'>Pomodoro</h1>
         <div class='pomodoro'>
             <div class='pomodoro-scale'>
+                <div class='spacer'></div>
                 {Array.from({ length: 61 }, (_, i) => {
                     const n = i;
                     const isMajor = n % 5 === 0;
@@ -35,6 +36,7 @@ import Layout from '@layouts/Layout.astro';
                         ></div>
                     );
                 })}
+                <div class='spacer'></div>
             </div>
             <div class='pomodoro-gap'></div>
             <div class='pomodoro-base'>
@@ -102,15 +104,14 @@ import Layout from '@layouts/Layout.astro';
         padding-block: var(--pomodoro-padding-block);
         background-color: var(--pomodoro-base-background-colour);
     }
+    .pomodoro-scale .spacer {
+        flex: 0 0 auto;
+        width: calc(50% - var(--pomodoro-scale-column-gap) - var(--pomodoro-marking-major-width) / 2);
+        height: 1px; // arbitrary
+    }
     .pomodoro-scale .pomodoro-marking {
         flex: 0 0 auto;
         position: relative;
-    }
-    .pomodoro-scale .pomodoro-marking:first-child {
-        margin-left: calc(50% - var(--pomodoro-marking-major-width) / 2);
-    }
-    .pomodoro-scale .pomodoro-marking:last-child {
-        margin-right: calc(50% - var(--pomodoro-marking-major-width) / 2);
     }
     .pomodoro-scale .pomodoro-marking-major {
         width: var(--pomodoro-marking-major-width);
