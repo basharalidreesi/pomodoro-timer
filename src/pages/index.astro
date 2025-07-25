@@ -31,8 +31,8 @@ import Layout from '@layouts/Layout.astro';
                     const isMajor = n % 5 === 0;
                     return (
                         <div
-                            class={`pomodoro-marking pomodoro-marking-${isMajor ? 'major' : 'minor'}`}
-                            data-number={n}
+                            class={`pomodoro-mark pomodoro-mark-${isMajor ? 'major' : 'minor'}`}
+                            data-value={n}
                         ></div>
                     );
                 })}
@@ -45,16 +45,56 @@ import Layout from '@layouts/Layout.astro';
                         <polygon points='50, 0 100, 100 0, 100' />
                     </svg>
                 </div>
-                <div class='pomodoro-status'>
-                    <div class='pomodoro-state pomodoro-state-complete'></div>
-                    <div class='pomodoro-state pomodoro-state-complete'></div>
-                    <div class='pomodoro-state pomodoro-state-complete'></div>
-                    <div class='pomodoro-state pomodoro-state-ongoing'></div>
-                </div>
+                <!-- <div class='pomodoro-status'>
+                    <div class='pomodoro-state' data-value='30'></div>
+                    <div class='pomodoro-state' data-value='25'></div>
+                    <div class='pomodoro-state' data-value='10'></div>
+                    <div class='pomodoro-state' data-value='25'></div>
+                    <div class='pomodoro-state' data-value='10'></div>
+                    <div class='pomodoro-state' data-value='25'></div>
+                    <div class='pomodoro-state' data-value='10'></div>
+                    <div class='pomodoro-state' data-value='25'></div>
+                </div> -->
             </div>
         </div>
     </main>
 </Layout>
+
+<script>
+    const scale = document.querySelector<HTMLElement>('.pomodoro-scale');
+    const marks = document.querySelectorAll<HTMLElement>('.pomodoro-mark');
+    let scrollEndTimeout: any = null;
+
+    const getCentredMark = (): HTMLElement | null => {
+        if (!scale) return null;
+        const scaleRect = scale.getBoundingClientRect();
+        const scaleCentreX = scaleRect.left + scaleRect.width / 2;
+        let closest = null;
+        let closestDistance = Infinity;
+        marks?.forEach((mark) => {
+            const rect = mark.getBoundingClientRect();
+            const markCentreX = rect.left + rect.width / 2;
+            const distance = Math.abs(scaleCentreX - markCentreX);
+            if (distance < closestDistance) {
+                closest = mark;
+                closestDistance = distance;
+            }
+        });
+        return closest;
+    };
+
+    scale?.addEventListener('scroll', () => {
+        clearTimeout(scrollEndTimeout);
+        scrollEndTimeout = setTimeout(() => {
+            const centredMark = getCentredMark();
+            if (!centredMark) return;
+            const number = parseInt(centredMark.getAttribute('data-value') || '', 10)
+            if (!isNaN(number) && number > 0) {
+                console.log(number);
+            }
+        }, 300);
+    });
+</script>
 
 <style lang='scss'>
     @use '@styles/mixins.scss';
@@ -69,7 +109,7 @@ import Layout from '@layouts/Layout.astro';
         position: relative;
         display: flex;
         flex-direction: column;
-        width: calc((var(--pomodoro-padding-inline) * 2) + ((var(--pomodoro-marking-major-width) + (var(--pomodoro-marking-minor-width) * 4) + (var(--pomodoro-scale-column-gap) * 5)) * var(--pomodoro-width-factor)));
+        width: calc((var(--pomodoro-padding-inline) * 2) + ((var(--pomodoro-mark-major-width) + (var(--pomodoro-mark-minor-width) * 4) + (var(--pomodoro-scale-column-gap) * 5)) * var(--pomodoro-width-factor)));
         border-radius: var(--pomodoro-border-radius);
         overflow: hidden;
         box-shadow: 0 0 0 var(--pomodoro-outline-width) var(--pomodoro-outline-colour);
@@ -78,7 +118,8 @@ import Layout from '@layouts/Layout.astro';
         content: '';
         position: absolute;
         inset: 0;
-        box-shadow: inset 0 0 var(--pomodoro-shadow-blur) var(--pomodoro-shadow-spread) var(--pomodoro-shadow-colour);
+        border-radius: var(--pomodoro-border-radius);
+        box-shadow: inset 0 var(--pomodoro-shadow-offset) var(--pomodoro-shadow-blur) var(--pomodoro-shadow-spread) var(--pomodoro-shadow-colour);
         pointer-events: none;
     }
     .pomodoro-scale {
@@ -89,8 +130,6 @@ import Layout from '@layouts/Layout.astro';
         padding-inline: var(--pomodoro-padding-inline);
         padding-block: var(--pomodoro-padding-block);
         background-color: var(--pomodoro-scale-background-colour);
-        // overflow-x: hidden;
-        // overflow-x: clip;
         overflow-x: auto;
         @include mixins.no-scrollbar;
     }
@@ -106,31 +145,30 @@ import Layout from '@layouts/Layout.astro';
     }
     .pomodoro-scale .spacer {
         flex: 0 0 auto;
-        width: calc(50% - var(--pomodoro-scale-column-gap) - var(--pomodoro-marking-major-width) / 2);
+        width: calc(50% - var(--pomodoro-scale-column-gap) - var(--pomodoro-mark-major-width) / 2);
         height: 1px; // arbitrary
     }
-    .pomodoro-scale .pomodoro-marking {
+    .pomodoro-scale .pomodoro-mark {
         flex: 0 0 auto;
         position: relative;
     }
-    .pomodoro-scale .pomodoro-marking-major {
-        width: var(--pomodoro-marking-major-width);
-        height: var(--pomodoro-marking-major-height);
-        background-color: var(--pomodoro-marking-major-background-colour);
+    .pomodoro-scale .pomodoro-mark-major {
+        width: var(--pomodoro-mark-major-width);
+        height: var(--pomodoro-mark-major-height);
+        background-color: var(--pomodoro-mark-major-background-colour);
     }
-    .pomodoro-scale .pomodoro-marking-major::before {
-        content: attr(data-number);
+    .pomodoro-scale .pomodoro-mark-major::before {
+        content: attr(data-value);
         position: absolute;
-        bottom: calc(100% + var(--pomodoro-marking-major-offset-top));
+        bottom: calc(100% + var(--pomodoro-mark-major-offset-top));
         left: 50%;
         transform: translateX(-50%);
-        font-size: var(--pomodoro-marking-font-size);
-        font-weight: var(--pomodoro-marking-font-weight);
+        font-size: var(--pomodoro-mark-font-size);
     }
-    .pomodoro-scale .pomodoro-marking-minor {
-        width: var(--pomodoro-marking-minor-width);
-        height: var(--pomodoro-marking-minor-height);
-        background-color: var(--pomodoro-marking-minor-background-colour);
+    .pomodoro-scale .pomodoro-mark-minor {
+        width: var(--pomodoro-mark-minor-width);
+        height: var(--pomodoro-mark-minor-height);
+        background-color: var(--pomodoro-mark-minor-background-colour);
     }
     .pomodoro-base {
         position: relative;
@@ -164,15 +202,12 @@ import Layout from '@layouts/Layout.astro';
     }
     .pomodoro-base .pomodoro-state {
         flex: 0 0 auto;
-        width: var(--pomodoro-state-width);
-        height: var(--pomodoro-state-height);
         border-radius: 100%;
     }
-    .pomodoro-base .pomodoro-state-complete {
-        background-color: var(--pomodoro-state-complete-background-colour);
-    }
-    .pomodoro-base .pomodoro-state-ongoing {
-        background-color: var(--pomodoro-state-ongoing-background-colour);
+    .pomodoro-base .pomodoro-state::after {
+        content: attr(data-value);
+        display: block;
+        font-size: var(--pomodoro-state-font-size);
     }
 
     .sr-only:not(:focus):not(:active) {

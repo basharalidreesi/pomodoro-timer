@@ -14,16 +14,13 @@
     --pomodoro-gap-background-colour: #fff;
     // pomodoro base
     --pomodoro-base-background-colour: #b74845;
-    // pomodoro markings
-    --pomodoro-marking-major-background-colour: #fff;
-    --pomodoro-marking-minor-background-colour: #fff;
+    // pomodoro marks
+    --pomodoro-mark-major-background-colour: #fff;
+    --pomodoro-mark-minor-background-colour: #fff;
     // pomodoro indicator
     --pomodoro-indicator-background-colour: #fff;
     // pomodoro status
-    --pomodoro-status-background-colour: #a3313c;
-    // pomodoro states
-    --pomodoro-state-complete-background-colour: #609863;
-    --pomodoro-state-ongoing-background-colour: #f9be5d;
+    --pomodoro-status-background-colour: transparent;
 }
 :root {
     // pomodoro
@@ -31,9 +28,10 @@
     --pomodoro-padding-block: 8px;
     --pomodoro-width-factor: 4;
     --pomodoro-outline-width: 8px;
-    --pomodoro-border-radius: 16px;
+    --pomodoro-border-radius: 80px 80px 160px 160px;
     --pomodoro-shadow-blur: 16px;
     --pomodoro-shadow-spread: 16px;
+    --pomodoro-shadow-offset: -16px;
     // pomodoro scale
     --pomodoro-scale-height: 96px;
     --pomodoro-scale-column-gap: 16px;
@@ -41,14 +39,13 @@
     --pomodoro-gap-height: 8px;
     // pomodoro base
     --pomodoro-base-height: 96px;
-    // pomodoro markings
-    --pomodoro-marking-major-width: 8px;
-    --pomodoro-marking-major-height: 24px;
-    --pomodoro-marking-major-offset-top: 4px;
-    --pomodoro-marking-minor-width: 4px;
-    --pomodoro-marking-minor-height: 12px;
-    --pomodoro-marking-font-size: 32px;
-    --pomodoro-marking-font-weight: 400;
+    // pomodoro marks
+    --pomodoro-mark-major-width: 8px;
+    --pomodoro-mark-major-height: 24px;
+    --pomodoro-mark-major-offset-top: 4px;
+    --pomodoro-mark-minor-width: 4px;
+    --pomodoro-mark-minor-height: 12px;
+    --pomodoro-mark-font-size: 32px;
     // pomodoro indicator
     --pomodoro-indicator-width: 48px;
     --pomodoro-indicator-height: 32px;
@@ -56,9 +53,7 @@
     --pomodoro-status-padding-block: 8px;
     --pomodoro-status-padding-inline: 16px;
     --pomodoro-status-column-gap: 8px;
-    // pomodoro states
-    --pomodoro-state-width: 8px;
-    --pomodoro-state-height: 8px;
+    --pomodoro-state-font-size: 10px;
 }
 @media (max-width: 640px) {
     :root {
@@ -73,6 +68,6 @@
 }
 @media (max-width: 384px) {
     :root {
-        --pomodoro-width-factor: 1.5;
+        --pomodoro-width-factor: 1.30775;
     }
 }
